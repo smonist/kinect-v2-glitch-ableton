@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>10.0.20506</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{C1624499-102D-F92B-D4E1-2A405683F8A9}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
+	<BaseDirectory>Assets</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE;UNITY_4_6_0;UNITY_4_6;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+	<Reference Include="System" />
+    <Reference Include="System.XML" />
+	<Reference Include="System.Core" />
+	<Reference Include="System.Xml.Linq" />
+	<Reference Include="UnityEngine">
+	  <HintPath>D:/Programme/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>D:/Programme/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	</Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\Standard Assets\CameraIntrinsics.cs" />
+     <Compile Include="Assets\Standard Assets\CollectionMap.cs" />
+     <Compile Include="Assets\Standard Assets\EventPump.cs" />
+     <Compile Include="Assets\Standard Assets\ExceptionHelper.cs" />
+     <Compile Include="Assets\Standard Assets\INativeWrapper.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\BlurEffect.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\ColorCorrectionEffect.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\ContrastStretchEffect.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\GlowEffect.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\GrayscaleEffect.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\ImageEffectBase.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\ImageEffects.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\MotionBlur.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\NoiseEffect.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\SSAOEffect.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\SepiaToneEffect.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\TwirlEffect.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\VortexEffect.cs" />
+     <Compile Include="Assets\Standard Assets\KinectBuffer.cs" />
+     <Compile Include="Assets\Standard Assets\KinectSpecialCases.cs" />
+     <Compile Include="Assets\Standard Assets\NativeObjectCache.cs" />
+     <Compile Include="Assets\Standard Assets\NativeWrapper.cs" />
+     <Compile Include="Assets\Standard Assets\SmartGCHandle.cs" />
+     <Compile Include="Assets\Standard Assets\ThreadSafeDictionary.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Data\PropertyChangedEventArgs.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\Activity.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\Appearance.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\AudioBeam.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\AudioBeamFrame.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\AudioBeamFrameArrivedEventArgs.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\AudioBeamFrameList.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\AudioBeamFrameReader.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\AudioBeamFrameReference.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\AudioBeamMode.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\AudioBeamSubFrame.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\AudioBodyCorrelation.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\AudioSource.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\Body.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\BodyFrame.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\BodyFrameArrivedEventArgs.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\BodyFrameReader.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\BodyFrameReference.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\BodyFrameSource.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\BodyIndexFrame.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\BodyIndexFrameArrivedEventArgs.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\BodyIndexFrameReader.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\BodyIndexFrameReference.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\BodyIndexFrameSource.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\CameraSpacePoint.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\ColorCameraSettings.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\ColorFrame.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\ColorFrameArrivedEventArgs.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\ColorFrameReader.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\ColorFrameReference.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\ColorFrameSource.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\ColorImageFormat.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\ColorSpacePoint.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\CoordinateMapper.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\CoordinateMappingChangedEventArgs.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\DepthFrame.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\DepthFrameArrivedEventArgs.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\DepthFrameReader.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\DepthFrameReference.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\DepthFrameSource.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\DepthSpacePoint.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\DetectionResult.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\Expression.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\FrameCapturedEventArgs.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\FrameCapturedStatus.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\FrameDescription.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\FrameEdges.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\FrameSourceTypes.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\HandState.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\InfraredFrame.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\InfraredFrameArrivedEventArgs.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\InfraredFrameReader.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\InfraredFrameReference.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\InfraredFrameSource.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\IsAvailableChangedEventArgs.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\Joint.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\JointOrientation.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\JointType.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\KinectAudioCalibrationState.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\KinectCapabilities.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\KinectSensor.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\LongExposureInfraredFrame.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\LongExposureInfraredFrameArrivedEventArgs.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\LongExposureInfraredFrameReader.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\LongExposureInfraredFrameReference.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\LongExposureInfraredFrameSource.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\MultiSourceFrame.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\MultiSourceFrameArrivedEventArgs.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\MultiSourceFrameReader.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\MultiSourceFrameReference.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\TrackingConfidence.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\TrackingState.cs" />
+     <Compile Include="Assets\Standard Assets\Windows\Kinect\Vector4.cs" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BlendOneOne.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\NoiseEffectShaderRGB.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\ShowAlphaChannel.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\GlowConeTap.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\SunShaftsComposite.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\ColorCorrectionCurves.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\ScreenSpaceAmbientObscurance.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_Antialiasing\NFAA.shader" />
+     <None Include="Assets\jointList.txt" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_DepthOfField\TiltShiftHdrLensBlur.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\VignetteShader.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_DepthOfField\DepthOfFieldScatter.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\MotionBlur.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\MobileBloom.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\GlowCompose.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\Contrast Stretch\MinMaxReduction.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_Antialiasing\SSAA.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\RadialBlur.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\ContrastComposite.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_Antialiasing\FXAAPreset3.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\FisheyeShader.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\Contrast Stretch\Apply.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\frag_ao.cginc" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_DepthOfField\DepthOfField34.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\MobileBlur.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\SSAOShader.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\ConvertDepth.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\ColorCorrectionCurvesSimple.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\NoiseEffectShaderYUV.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\GlowEffectDownsample.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\CreaseApply.shader" />
+     <None Include="Assets\Glitch\GlitchShader.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\ChromaticAberrationShader.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\GlobalFog.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\Contrast Stretch\Luminance.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\ColorCorrectionSelective.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_DepthOfField\Bokeh34.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\CameraMotionBlurDX11.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\SeparableBlurPlus.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\MultiPassHollywoodFlares.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\BlurEffectConeTaps.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\CameraMotionBlur.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_Antialiasing\DLAA.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\NoiseAndGrainDX11.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BrightPassFilter2.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_DepthOfField\SeparableBlur.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\MotionBlurClear.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\ColorCorrectionEffect.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\GrayscaleEffect.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\SepiaToneEffect.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\TwirlEffect.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\VortexEffect.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\Contrast Stretch\Adaptation.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\NoiseAndGrain.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\VignettingShader.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\Tonemapper.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BrightPassFilter.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_Antialiasing\FXAA2.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\ColorCorrection3DLut.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\LensFlareCreate.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\EdgeDetectNormals.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\PrepareSunShaftsBlur.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\Blend.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\BlendModesOverlay.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\SimpleClear.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_Antialiasing\FXAA3Console.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_Antialiasing\FXAAPreset2.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BlurAndFlares.shader" />
+     <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BlendForBloom.shader" />
+ <Reference Include="UnityEngine.UI">
+ <HintPath>D:/Programme/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>
