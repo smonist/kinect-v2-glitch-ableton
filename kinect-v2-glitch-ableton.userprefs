@@ -1,11 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\HandControl\HandControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\BodySourceView.cs">
     <Files>
-      <File FileName="..\particle system function\particle system function.sln" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\HandControl\HandControl.cs" Line="20" Column="2" />
-      <File FileName="Assets\Scripts\BodySourceView.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Glitch Ableton\JitSend.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\HandControl\HandControl.cs" Line="63" Column="47" />
+      <File FileName="Assets\Scripts\BodySourceManager.cs" Line="24" Column="4" />
+      <File FileName="Assets\Scripts\BodySourceView.cs" Line="79" Column="15" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -13,6 +13,8 @@ public class HandControl : MonoBehaviour {
 	float[] rightHand = new float[2];
 	float[] difference = {0, 0};
 
+	private Vector3 velocity;
+	
 	// Use this for initialization
 	void Start () {
 		_BodyView = BodySourceView.GetComponent<BodySourceView>();
@@ -51,12 +53,22 @@ public class HandControl : MonoBehaviour {
 				points[i].color = colorCache[i-1];			
 			}
 			points[0].color = colorCache[resolution];
+			
 
-			transform.position = new Vector3 (leftHand[0],leftHand[1],0);
+			transform.position = SmoothApproach(transform.position, transform.position, new Vector3(leftHand[0], leftHand[1], 0), 10f);
+
 			particleSystem.SetParticles(points, points.Length);
 		}
 		else {
 			transform.position = new Vector3 (0, 0, 0);
 		}
+	}
+
+	Vector3 SmoothApproach( Vector3 pastPosition, Vector3 pastTargetPosition, Vector3 targetPosition, float speed )
+	{
+		float t = Time.deltaTime * speed;
+		Vector3 v = ( targetPosition - pastTargetPosition ) / t;
+		Vector3 f = pastPosition - pastTargetPosition + v;
+		return targetPosition - v + f * Mathf.Exp( -t );
 	}
 }

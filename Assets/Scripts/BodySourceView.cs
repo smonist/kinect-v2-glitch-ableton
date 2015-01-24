@@ -65,6 +65,7 @@ public class BodySourceView : MonoBehaviour
 		}
 		
 		List<ulong> trackedIds = new List<ulong>();
+		int bodyCount = 0;
 		foreach(var body in data)
 		{
 			if (body == null)
@@ -74,8 +75,10 @@ public class BodySourceView : MonoBehaviour
 			
 			if(body.IsTracked)
 			{
+				bodyCount++;
 				trackedIds.Add (body.TrackingId);
 			}
+			Debug.Log(bodyCount.ToString());
 		}
 		
 		List<ulong> knownIds = new List<ulong>(_Bodies.Keys);
