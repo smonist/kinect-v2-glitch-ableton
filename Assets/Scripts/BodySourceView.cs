@@ -8,7 +8,7 @@ public class BodySourceView : MonoBehaviour
 	public GameObject BodySourceManager;
 	public GUIText GUIRightHand;
 	public GUIText GUIDebug;
-	//public GUIText GUIDebugTwo;
+	public GUIText GUIDebugTwo;
 	public int frameBufferCount;
 	
 	private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
@@ -25,8 +25,8 @@ public class BodySourceView : MonoBehaviour
 
 	void Start ()
 	{
+		//joint position cache
 		jointCacheQueues = new Queue<Vector3>[25];
-
 		for (int i = 0; i < 25; i++) {
 			jointCacheQueues[i] = new Queue<Vector3>();
 
@@ -35,6 +35,7 @@ public class BodySourceView : MonoBehaviour
 			}
 		}
 
+		//create acceleration caches
 		globalAcceleration.Set(0, 0, 0);
 		for (int i = 0; i < localAcceleration.Length; i++) {
 			localAcceleration[i] = Vector3.zero;
@@ -106,7 +107,6 @@ public class BodySourceView : MonoBehaviour
 				globalAcceleration = Vector3.zero;
 
 				GUIRightHand.text = "joint not tracked";
-				//GUIDebug.text = "-";
 				GUIDebug.text = globalAcceleration.ToString();
 			}
 		}
@@ -155,6 +155,8 @@ public class BodySourceView : MonoBehaviour
 				GUIRightHand.text = localAcceleration[jointCount].ToString();
 			}
 
+			//GUIDebugTwo.text = SmoothAcceleration(10).ToString();
+
 			jointCacheQueues[jointCount].Dequeue();
 			jointCacheQueues[jointCount].Enqueue(vectorSourceJoint);
 
@@ -162,6 +164,17 @@ public class BodySourceView : MonoBehaviour
 		}
 
 		GUIDebug.text = globalAcceleration.ToString();
+	}
+
+	private Vector3 SmoothJoint (int joint) {
+		Vector3 smoothedAcceleration = localAcceleration [joint];
+		foreach (Vector3 vec in localAccelerationCache[joint]) {
+			smoothedAcceleration += vec;
+		}
+		
+		smoothedAcceleration = (smoothedAcceleration/(localAccelerationCache[joint].Count + 1));
+		
+		return smoothedAcceleration;
 	}
 
 	private Vector3 GetVector3FromJoint(Kinect.Joint joint)
@@ -195,3 +208,31 @@ public class BodySourceView : MonoBehaviour
 		return isTracked;
 	}
 }
+
+//-----UNUSED-----//
+/*
+private List<Vector3>[] localAccelerationCache = new List<Vector3>[25];
+
+//localAcceleration cache
+	for (int i = 0; i < 25; i++) {
+		localAccelerationCache[i] = new List<Vector3>();
+
+		for (int  u = 0; u < frameBufferCount; u++) {
+			localAccelerationCache[i].Add(Vector3.zero);
+		}
+	}
+
+	localAccelerationCache[jointCount].RemoveAt(0);
+	localAccelerationCache[jointCount].Add(localAcceleration[jointCount]);
+
+private Vector3 SmoothAcceleration (int joint) {
+	Vector3 smoothedAcceleration = localAcceleration [joint];
+	foreach (Vector3 vec in localAccelerationCache[joint]) {
+		smoothedAcceleration += vec;
+	}
+	
+	smoothedAcceleration = (smoothedAcceleration/(localAccelerationCache[joint].Count + 1));
+	
+	return smoothedAcceleration;
+}
+*/

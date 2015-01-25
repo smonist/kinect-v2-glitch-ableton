@@ -33,9 +33,6 @@ public class JitSend : MonoBehaviour {
 	private float connectionAttempt;
 	private bool connection;
 
-
-	public GUIText GUIDebugTwo;
-
 	public GameObject BodySourceView;
 	private BodySourceView _BodyView;
 	private Vector3 sourceJoint;
@@ -97,8 +94,6 @@ public class JitSend : MonoBehaviour {
 		toSend[2] = (float) Math.Round(toSend[2], 2);
 
 		write(toSend);
-		GUIDebugTwo.text = toSend[2].ToString("F2");
-
 
 
 
