@@ -78,7 +78,7 @@ public class BodySourceView : MonoBehaviour
 				bodyCount++;
 				trackedIds.Add (body.TrackingId);
 			}
-			Debug.Log(bodyCount.ToString());
+			//Debug.Log(bodyCount.ToString());
 		}
 		
 		List<ulong> knownIds = new List<ulong>(_Bodies.Keys);
