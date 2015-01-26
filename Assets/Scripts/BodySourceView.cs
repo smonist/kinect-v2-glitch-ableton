@@ -16,8 +16,9 @@ public class BodySourceView : MonoBehaviour
 
 	Queue<Vector3>[] jointCacheQueues;
 	private int jointCount;
+	
+	private List<Vector3>[] jointStorage = new List<Vector3>[25];
 
-	private Vector3[] jointStorage = new Vector3[25];
 	private Vector3[] localAcceleration = new Vector3[25];
 	public Vector3 globalAcceleration;
 
@@ -39,6 +40,14 @@ public class BodySourceView : MonoBehaviour
 		globalAcceleration.Set(0, 0, 0);
 		for (int i = 0; i < localAcceleration.Length; i++) {
 			localAcceleration[i] = Vector3.zero;
+		}
+
+		for (int i = 0; i < 25; i++) {
+			jointStorage[i] = new List<Vector3>();
+			
+			for (int  u = 0; u < frameBufferCount; u++) {
+				jointStorage[i].Add(Vector3.zero);
+			}
 		}
 	}
 	
@@ -143,7 +152,9 @@ public class BodySourceView : MonoBehaviour
 		foreach (Kinect.Joint sourceJoint in body.Joints.Values) {
 			Vector3 vectorSourceJoint = GetVector3FromJoint(sourceJoint);
 
-			jointStorage[jointCount] = vectorSourceJoint;
+			//jointStorage[jointCount] = vectorSourceJoint;
+			jointStorage[jointCount].RemoveAt(0);
+			jointStorage[jointCount].Add(vectorSourceJoint);
 
 
 			localAcceleration[jointCount] = vectorSourceJoint - jointCacheQueues[jointCount].Peek();
@@ -152,10 +163,10 @@ public class BodySourceView : MonoBehaviour
 			}
 
 			if (jointCount == 10) {
-				GUIRightHand.text = localAcceleration[jointCount].ToString();
+				GUIRightHand.text = vectorSourceJoint.ToString();
+				GUIDebugTwo.text = SmoothJoint(10).ToString();
 			}
 
-			//GUIDebugTwo.text = SmoothAcceleration(10).ToString();
 
 			jointCacheQueues[jointCount].Dequeue();
 			jointCacheQueues[jointCount].Enqueue(vectorSourceJoint);
@@ -166,15 +177,15 @@ public class BodySourceView : MonoBehaviour
 		GUIDebug.text = globalAcceleration.ToString();
 	}
 
-	private Vector3 SmoothJoint (int joint) {
-		Vector3 smoothedAcceleration = localAcceleration [joint];
-		foreach (Vector3 vec in localAccelerationCache[joint]) {
-			smoothedAcceleration += vec;
+	public Vector3 SmoothJoint (int joint) {
+		Vector3 smoothedJoint = jointStorage[joint][frameBufferCount - 1];
+		foreach (Vector3 vec in jointStorage[joint]) {
+			smoothedJoint += vec;
 		}
 		
-		smoothedAcceleration = (smoothedAcceleration/(localAccelerationCache[joint].Count + 1));
+		smoothedJoint = (smoothedJoint/(jointStorage[joint].Count + 1));
 		
-		return smoothedAcceleration;
+		return smoothedJoint;
 	}
 
 	private Vector3 GetVector3FromJoint(Kinect.Joint joint)
@@ -201,7 +212,7 @@ public class BodySourceView : MonoBehaviour
 	}
 
 	public Vector3 GetJoint (int joint) {
-		return jointStorage[joint];
+		return jointStorage[joint][frameBufferCount - 1];
 	}
 
 	public bool isBodyTracked () {

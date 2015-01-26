@@ -36,14 +36,14 @@ public class HandControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (_BodyView.isBodyTracked()) {
-			leftCube.transform.position = _BodyView.GetJoint(6);
-			rightCube.transform.position = _BodyView.GetJoint(10);
+			leftCube.transform.position = _BodyView.SmoothJoint(6);
+			rightCube.transform.position = _BodyView.SmoothJoint(10);
 
 
 			Color[] colorCache = new Color[resolution + 1];
 
-			leftHand = _BodyView.GetJoint(6); //Left
-			rightHand = _BodyView.GetJoint(10); //Right
+			leftHand = _BodyView.SmoothJoint(6); //Left
+			rightHand = _BodyView.SmoothJoint(10); //Right
 
 			//leftHand = SmoothApproach(points[0].position, leftHandCache, leftHand, smoothSpeed);
 			//rightHand = SmoothApproach(points[resolution].position, rightHandCache, rightHand, smoothSpeed);
