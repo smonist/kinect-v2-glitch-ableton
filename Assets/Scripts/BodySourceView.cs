@@ -24,6 +24,11 @@ public class BodySourceView : MonoBehaviour
 
 	private bool isTracked = false;
 
+	private float nearestBody = 100f;
+	private int bodyCountIndex;
+
+	public float zRestriction = 30f;
+
 	void Start ()
 	{
 		//joint position cache
@@ -55,12 +60,8 @@ public class BodySourceView : MonoBehaviour
 	{
 		//reset acceleration
 		globalAcceleration.Set(0, 0, 0);
-
-		if (BodySourceManager == null)
-		{
-			return;
-		}
-
+		//reset z of nearest body
+		nearestBody = 100f;
 
 		_BodyManager = BodySourceManager.GetComponent<BodySourceManager>();
 		if (_BodyManager == null)
@@ -88,7 +89,6 @@ public class BodySourceView : MonoBehaviour
 				bodyCount++;
 				trackedIds.Add (body.TrackingId);
 			}
-			//Debug.Log(bodyCount.ToString());
 		}
 		
 		List<ulong> knownIds = new List<ulong>(_Bodies.Keys);
@@ -101,42 +101,42 @@ public class BodySourceView : MonoBehaviour
 				Destroy(_Bodies[trackingId]);
 				_Bodies.Remove(trackingId);
 
-				isTracked = false;
-
-				//reset caches when player is out of view
-				for (int i = 0; i < 25; i++) {
-					for (int  u = 0; u < frameBufferCount; u++) {
-						jointCacheQueues[i].Dequeue();
-						jointCacheQueues[i].Enqueue(Vector3.zero);
-					}
-				}
-				for (int i = 0; i < localAcceleration.Length; i++) {
-					localAcceleration[i] = Vector3.zero;
-				}
-				globalAcceleration = Vector3.zero;
-
-				GUIRightHand.text = "joint not tracked";
-				GUIDebug.text = globalAcceleration.ToString();
+				playerOutOfRange();
 			}
 		}
-		
-		foreach(var body in data)
+
+		bodyCountIndex = -1;
+		for (int i = 0; i < data.Length; i++)
 		{
-			if (body == null)
+			if (data[i] == null)
 			{
 				continue;
 			}
 			
-			if(body.IsTracked)
+			if(data[i].IsTracked)
 			{
-				if(!_Bodies.ContainsKey(body.TrackingId))
+				if(!_Bodies.ContainsKey(data[i].TrackingId))
 				{
-					_Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
+					_Bodies[data[i].TrackingId] = CreateBodyObject(data[i].TrackingId);
 				}
+				if ((data[i].Joints[Kinect.JointType.SpineBase].Position.Z * 10) < zRestriction) {
+					if ((data[i].Joints[Kinect.JointType.SpineBase].Position.Z * 10) < nearestBody) {
+						nearestBody = (data[i].Joints[Kinect.JointType.SpineBase].Position.Z * 10);
+						bodyCountIndex = i;
 
+						GUIDebug.text = bodyCountIndex.ToString();
+						GUIDebugTwo.text = nearestBody.ToString();
+					}
+				}
 				isTracked = true;
-				RefreshBodyObject(body, _Bodies[body.TrackingId]);
 			}
+		}
+
+		if (bodyCountIndex != -1) {
+			RefreshBodyObject(data[bodyCountIndex]);
+		}
+		else {
+			playerOutOfRange();
 		}
 	}
 	
@@ -146,7 +146,7 @@ public class BodySourceView : MonoBehaviour
 		return body;
 	}
 	
-	private void RefreshBodyObject(Kinect.Body body, GameObject bodyObject)
+	private void RefreshBodyObject(Kinect.Body body)
 	{
 		jointCount = 0;
 		foreach (Kinect.Joint sourceJoint in body.Joints.Values) {
@@ -163,8 +163,7 @@ public class BodySourceView : MonoBehaviour
 			}
 
 			if (jointCount == 10) {
-				GUIRightHand.text = vectorSourceJoint.ToString();
-				GUIDebugTwo.text = SmoothJoint(10).ToString();
+				GUIRightHand.text = SmoothJoint(10).ToString();
 			}
 
 
@@ -173,8 +172,24 @@ public class BodySourceView : MonoBehaviour
 
 			jointCount++;
 		}
+	}
 
-		GUIDebug.text = globalAcceleration.ToString();
+	private void playerOutOfRange() {
+		isTracked = false;
+		
+		//reset caches when player is out of view
+		for (int i = 0; i < 25; i++) {
+			for (int  u = 0; u < frameBufferCount; u++) {
+				jointCacheQueues[i].Dequeue();
+				jointCacheQueues[i].Enqueue(Vector3.zero);
+			}
+		}
+		for (int i = 0; i < localAcceleration.Length; i++) {
+			localAcceleration[i] = Vector3.zero;
+		}
+		globalAcceleration = Vector3.zero;
+		
+		GUIRightHand.text = "joint not tracked";
 	}
 
 	public Vector3 SmoothJoint (int joint) {
@@ -219,31 +234,3 @@ public class BodySourceView : MonoBehaviour
 		return isTracked;
 	}
 }
-
-//-----UNUSED-----//
-/*
-private List<Vector3>[] localAccelerationCache = new List<Vector3>[25];
-
-//localAcceleration cache
-	for (int i = 0; i < 25; i++) {
-		localAccelerationCache[i] = new List<Vector3>();
-
-		for (int  u = 0; u < frameBufferCount; u++) {
-			localAccelerationCache[i].Add(Vector3.zero);
-		}
-	}
-
-	localAccelerationCache[jointCount].RemoveAt(0);
-	localAccelerationCache[jointCount].Add(localAcceleration[jointCount]);
-
-private Vector3 SmoothAcceleration (int joint) {
-	Vector3 smoothedAcceleration = localAcceleration [joint];
-	foreach (Vector3 vec in localAccelerationCache[joint]) {
-		smoothedAcceleration += vec;
-	}
-	
-	smoothedAcceleration = (smoothedAcceleration/(localAccelerationCache[joint].Count + 1));
-	
-	return smoothedAcceleration;
-}
-*/

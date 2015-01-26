@@ -1,9 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\HandControl\HandControl.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\BodySourceView.cs">
     <Files>
-      <File FileName="Assets\Scripts\BodySourceView.cs" Line="181" Column="69" />
-      <File FileName="Assets\Scripts\HandControl\HandControl.cs" Line="32" Column="4" />
+      <File FileName="Assets\Scripts\BodySourceView.cs" Line="131" Column="22" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
