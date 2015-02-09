@@ -41,9 +41,12 @@ public class JitSend : MonoBehaviour {
 	public float grenzwert = 0.3f;
 	private float[] toSend = {0, 0, 0};
 
+	public int minDistance = 15;
+	public int maxDistance = 35;
+
 
 	void Update() {
-		sourceJoint = _BodyView.GetLocalAcceleration(true, 10);
+		sourceJoint = _BodyView.SmoothAcceleration(true, 10);
 
 		if (sourceJoint.x > grenzwert | sourceJoint.y > grenzwert | sourceJoint.z > grenzwert) {
 			toSend[0] = 1;
@@ -56,24 +59,24 @@ public class JitSend : MonoBehaviour {
 
 
 		//prepare volume of background music
-		sourcePosition = _BodyView.GetJoint(0).z;
+		sourcePosition = _BodyView.SmoothJoint(0).z;
 
 		//define boundaries
-		if (sourcePosition < 15 && sourcePosition > 1) {
+		if (sourcePosition < minDistance) {
 			sourcePosition = 15;
 		}
-		else if (sourcePosition > 35) {
-			sourcePosition = 35;
+		else if (sourcePosition > maxDistance) {
+			sourcePosition = maxDistance;
 		}
 
 		//if no player is in view, set to 0.4
-		if (sourcePosition == 0) {
-			sourcePosition = 0.4f;
+		if (!_BodyView.isBodyTracked()) {
+			sourcePosition = 0.6f;
 		}
 		else {
 			//break it down to a range from 0 to 1
-			sourcePosition -= 15;
-			sourcePosition *= 5;
+			sourcePosition -= minDistance;
+			sourcePosition *= (100/(maxDistance - minDistance));
 			sourcePosition /= 100;
 
 			//ableton scales the volume exponentially, so we are doing some tricks here
@@ -81,8 +84,8 @@ public class JitSend : MonoBehaviour {
 			sourcePosition = (1 - sourcePosition);
 
 			//at least 0.4
-			if (sourcePosition < 0.4) {
-				sourcePosition = 0.4f;
+			if (sourcePosition < 0.6) {
+				sourcePosition = 0.6f;
 			}
 		}
 

@@ -13,7 +13,7 @@ public class GlowEffect : MonoBehaviour
 {
 	/// The brightness of the glow. Values larger than one give extra "boost".
 	public float glowIntensity = 1.5f;
-	
+
 	/// Blur iterations - larger number means more blur.
 	public int blurIterations = 3;
 	

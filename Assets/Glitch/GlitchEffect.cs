@@ -10,16 +10,19 @@ to make commercial use of the work
 */
 
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 
 [ExecuteInEditMode]
 [AddComponentMenu("Image Effects/GlitchEffect")]
 public class GlitchEffect : ImageEffectBase {
 	public Texture2D displacementMap;
 	float glitchup, glitchdown, flicker,
-			glitchupTime = 0.05f, glitchdownTime = 0.05f, flickerTime = 0.5f;
+	glitchupTime = 0.05f, glitchdownTime = 0.05f, flickerTime = 0.5f, intensity = 0;
 	
-	public float intensity;
+	public float userIntensity;
+	public float grenzwert;
+
+	int activeTimer = 0;
 	
 	public GameObject BodySourceView;
 	private BodySourceView _BodyView;
@@ -31,53 +34,67 @@ public class GlitchEffect : ImageEffectBase {
 
 	// Called by camera to apply image effect
 	void OnRenderImage (RenderTexture source, RenderTexture destination) {
-		Vector3 sourceJoint = _BodyView.GetLocalAcceleration (true, 10);
+		/*Vector3 sourceJoint = _BodyView.GetLocalAcceleration (true, 20);
 
-		if (sourceJoint.x > 0.3f | sourceJoint.y > 0.3f | sourceJoint.z > 0.3f) {
-						intensity = 1; 
+		if (sourceJoint.x > grenzwert | sourceJoint.y > grenzwert | sourceJoint.z > grenzwert) {
+						intensity = userIntensity; 
 				}
 		else{
 			intensity = 0;
-				}
-				material.SetFloat ("_Intensity", intensity);
-				material.SetTexture ("_DispTex", displacementMap);
-
-				glitchup += Time.deltaTime * intensity;
-				glitchdown += Time.deltaTime * intensity;
-				flicker += Time.deltaTime * intensity;
-
-				if (flicker > flickerTime) {
-						material.SetFloat ("filterRadius", Random.Range (-3f, 3f) * intensity);
-						flicker = 0;
-						flickerTime = Random.value;
-				}
-
-				if (glitchup > glitchupTime) {
-						if (Random.value < 0.1f * intensity)
-								material.SetFloat ("flip_up", Random.Range (0, 1f) * intensity);
-						else
-								material.SetFloat ("flip_up", 0);
-	
-						glitchup = 0;
-						glitchupTime = Random.value / 10f;
-				}
-
-				if (glitchdown > glitchdownTime) {
-						if (Random.value < 0.1f * intensity)
-								material.SetFloat ("flip_down", 1 - Random.Range (0, 1f) * intensity);
-						else
-								material.SetFloat ("flip_down", 1);
-	
-						glitchdown = 0;
-						glitchdownTime = Random.value / 10f;
-				}
-
-				if (Random.value < 0.05 * intensity) {
-						material.SetFloat ("displace", Random.value * intensity);
-						material.SetFloat ("scale", 1 - Random.value * intensity);
-				} else
-						material.SetFloat ("displace", 0);
-
-				Graphics.Blit (source, destination, material);
+				}*/
+		if (activeTimer == 0) {
+			intensity = 0f;
+			if ((Mathf.RoundToInt(Random.Range(1, 100)) == 2)) {
+				activeTimer = Mathf.RoundToInt(Random.Range(6, 30));
+			}
 		}
+		else {
+			activeTimer--;
+			intensity = userIntensity * (Random.Range(80, 120) / 100);
+		}
+
+
+
+		material.SetFloat ("_Intensity", intensity);
+		material.SetTexture ("_DispTex", displacementMap);
+
+		glitchup += Time.deltaTime * intensity;
+		glitchdown += Time.deltaTime * intensity;
+		flicker += Time.deltaTime * intensity;
+
+		if (flicker > flickerTime) {
+				material.SetFloat ("filterRadius", Random.Range (-3f, 3f) * intensity);
+				flicker = 0;
+				flickerTime = Random.value;
+		}
+
+		/*if (glitchup > glitchupTime) {
+				if (Random.value < 0.1f * intensity)
+						material.SetFloat ("flip_up", Random.Range (0, 1f) * intensity);
+				else
+						material.SetFloat ("flip_up", 0);
+
+				glitchup = 0;
+				glitchupTime = Random.value / 10f;
+		}
+
+		if (glitchdown > glitchdownTime) {
+				if (Random.value < 0.1f * intensity)
+						material.SetFloat ("flip_down", 1 - Random.Range (0, 1f) * intensity);
+				else
+						material.SetFloat ("flip_down", 1);
+
+				glitchdown = 0;
+				glitchdownTime = Random.value / 10f;
+		}
+
+		if (Random.value < 0.05 * intensity) {
+				material.SetFloat ("displace", Random.value * intensity);
+				material.SetFloat ("scale", 1 - Random.value * intensity);
+		} else
+				material.SetFloat ("displace", 0);
+				*/
+
+		Graphics.Blit (source, destination, material);
+	}
 }

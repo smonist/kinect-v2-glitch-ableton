@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Kinect = Windows.Kinect;
@@ -9,18 +10,20 @@ public class BodySourceView : MonoBehaviour
 	public GUIText GUIRightHand;
 	public GUIText GUIDebug;
 	public GUIText GUIDebugTwo;
-	public int frameBufferCount;
+	
+	public int accelerationBufferSize;
+	public int jointBufferSize;
 	
 	private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
 	private BodySourceManager _BodyManager;
-
-	Queue<Vector3>[] jointCacheQueues;
+	
 	private int jointCount;
 	
 	private List<Vector3>[] jointStorage = new List<Vector3>[25];
+	private List<Vector3>[] localAccelerationCache = new List<Vector3>[25];
 
 	private Vector3[] localAcceleration = new Vector3[25];
-	public Vector3 globalAcceleration;
+	Vector3 globalAcceleration;
 
 	private bool isTracked = false;
 
@@ -31,27 +34,25 @@ public class BodySourceView : MonoBehaviour
 
 	void Start ()
 	{
-		//joint position cache
-		jointCacheQueues = new Queue<Vector3>[25];
-		for (int i = 0; i < 25; i++) {
-			jointCacheQueues[i] = new Queue<Vector3>();
-
-			for (int  u = 0; u < frameBufferCount; u++) {
-				jointCacheQueues[i].Enqueue(Vector3.zero);
-			}
-		}
-
-		//create acceleration caches
+		//fill caches
 		globalAcceleration.Set(0, 0, 0);
 		for (int i = 0; i < localAcceleration.Length; i++) {
 			localAcceleration[i] = Vector3.zero;
 		}
 
+		//joint position cache
 		for (int i = 0; i < 25; i++) {
 			jointStorage[i] = new List<Vector3>();
-			
-			for (int  u = 0; u < frameBufferCount; u++) {
+			for (int  u = 0; u < jointBufferSize; u++) {
 				jointStorage[i].Add(Vector3.zero);
+			}
+		}
+
+		//localAcceleration cache
+		for (int i = 0; i < 25; i++) {
+			localAccelerationCache[i] = new List<Vector3>();
+			for (int  u = 0; u < accelerationBufferSize; u++) {
+				localAccelerationCache[i].Add(Vector3.zero);
 			}
 		}
 	}
@@ -152,23 +153,25 @@ public class BodySourceView : MonoBehaviour
 		foreach (Kinect.Joint sourceJoint in body.Joints.Values) {
 			Vector3 vectorSourceJoint = GetVector3FromJoint(sourceJoint);
 
-			//jointStorage[jointCount] = vectorSourceJoint;
-			jointStorage[jointCount].RemoveAt(0);
-			jointStorage[jointCount].Add(vectorSourceJoint);
 
 
-			localAcceleration[jointCount] = vectorSourceJoint - jointCacheQueues[jointCount].Peek();
+
+			localAcceleration[jointCount] = vectorSourceJoint - jointStorage[jointCount][0];
 			if (!V3Equal(localAcceleration[jointCount], Vector3.zero)) {
 				globalAcceleration += V3Abs(localAcceleration[jointCount]);
 			}
 
 			if (jointCount == 10) {
-				GUIRightHand.text = SmoothJoint(10).ToString();
+				GUIRightHand.text = SmoothAcceleration(false, 10).ToString();
 			}
 
+			//joint cache
+			jointStorage[jointCount].RemoveAt(0);
+			jointStorage[jointCount].Add(vectorSourceJoint);
 
-			jointCacheQueues[jointCount].Dequeue();
-			jointCacheQueues[jointCount].Enqueue(vectorSourceJoint);
+			//acceleration cache
+			localAccelerationCache[jointCount].RemoveAt(0);
+			localAccelerationCache[jointCount].Add(localAcceleration[jointCount]);
 
 			jointCount++;
 		}
@@ -179,11 +182,17 @@ public class BodySourceView : MonoBehaviour
 		
 		//reset caches when player is out of view
 		for (int i = 0; i < 25; i++) {
-			for (int  u = 0; u < frameBufferCount; u++) {
-				jointCacheQueues[i].Dequeue();
-				jointCacheQueues[i].Enqueue(Vector3.zero);
+			for (int  u = 0; u < jointBufferSize; u++) {
+				jointStorage[i][u] = Vector3.zero;
 			}
 		}
+
+		for (int i = 0; i < 25; i++) {
+			for (int u = 0; i < accelerationBufferSize; i++) {
+				localAccelerationCache[i][u] = Vector3.zero;
+			}
+		}
+
 		for (int i = 0; i < localAcceleration.Length; i++) {
 			localAcceleration[i] = Vector3.zero;
 		}
@@ -193,14 +202,33 @@ public class BodySourceView : MonoBehaviour
 	}
 
 	public Vector3 SmoothJoint (int joint) {
-		Vector3 smoothedJoint = jointStorage[joint][frameBufferCount - 1];
+		Vector3 smoothedJoint = jointStorage[joint][jointBufferSize - 1];
 		foreach (Vector3 vec in jointStorage[joint]) {
 			smoothedJoint += vec;
 		}
 		
 		smoothedJoint = (smoothedJoint/(jointStorage[joint].Count + 1));
+		smoothedJoint = new Vector3 ((float) Math.Round (smoothedJoint.x, 2), (float) Math.Round (smoothedJoint.y, 2), (float) Math.Round (smoothedJoint.z, 2));
 		
 		return smoothedJoint;
+	}
+
+	public Vector3 SmoothAcceleration (bool absolute, int joint) {
+		Vector3 smoothedAcceleration = localAcceleration [joint];
+		foreach (Vector3 vec in localAccelerationCache[joint]) {
+			smoothedAcceleration += vec;
+		}
+		
+		smoothedAcceleration = (smoothedAcceleration/(localAccelerationCache[joint].Count + 1));
+		smoothedAcceleration = new Vector3 ((float) Math.Round (smoothedAcceleration.x, 2), (float) Math.Round (smoothedAcceleration.y, 2), (float) Math.Round (smoothedAcceleration.z, 2));
+
+
+		if (absolute) {
+			return V3Abs(smoothedAcceleration);
+		}
+		else {
+			return smoothedAcceleration;
+		}
 	}
 
 	private Vector3 GetVector3FromJoint(Kinect.Joint joint)
@@ -227,7 +255,7 @@ public class BodySourceView : MonoBehaviour
 	}
 
 	public Vector3 GetJoint (int joint) {
-		return jointStorage[joint][frameBufferCount - 1];
+		return jointStorage[joint][jointBufferSize - 1];
 	}
 
 	public bool isBodyTracked () {

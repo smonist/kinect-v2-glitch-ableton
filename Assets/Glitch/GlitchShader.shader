@@ -52,29 +52,24 @@ SubShader {
 		
 		half4 frag (v2f i) : COLOR
 		{
-	
 			half4 normal = tex2D (_DispTex, i.uv.xy * scale);
 			
-			if(i.uv.y < flip_up)
-				i.uv.y = 1 - (i.uv.y + flip_up);
+			//if(i.uv.y < flip_up)
+			//	i.uv.y = 1 - (i.uv.y + flip_up);
 			
-			if(i.uv.y > flip_down)
-				i.uv.y = 1 - (i.uv.y - flip_down);
+			//if(i.uv.y > flip_down)
+			//	i.uv.y = 1 - (i.uv.y - flip_down);
 			
 			i.uv.xy += (normal.xy - 0.5) * displace * _Intensity;
 			
 			
 			half4 color = tex2D(_MainTex,  i.uv.xy);
-			half4 redcolor = tex2D(_MainTex,  i.uv.xy + 0.01 * filterRadius * _Intensity);	
+			half4 redcolor = tex2D(_MainTex,  i.uv.xy + 0.01 * filterRadius * _Intensity);
 			half4 greencolor = tex2D(_MainTex,  i.uv.xy + 0.01 * filterRadius * _Intensity);
 			
-			if(filterRadius > 0){
-				color.r = redcolor.r * 1.2;
-				color.b = greencolor.b * 1.2;
-			}else{
-				color.g = redcolor.b * 1.2;
-				color.r = greencolor.g * 1.2;
-			}
+			
+			color.r = redcolor.r * 1;
+			color.b = greencolor.b * 1;
 			
 			return color;
 		}
