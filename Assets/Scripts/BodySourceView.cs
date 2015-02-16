@@ -146,7 +146,8 @@ public class BodySourceView : MonoBehaviour
 		GameObject body = new GameObject("Body:" + id);
 		return body;
 	}
-	
+
+	//this is where the party happens
 	private void RefreshBodyObject(Kinect.Body body)
 	{
 		jointCount = 0;
@@ -177,6 +178,7 @@ public class BodySourceView : MonoBehaviour
 		}
 	}
 
+	//stuff to do when the player gets out of range
 	private void playerOutOfRange() {
 		isTracked = false;
 		
@@ -201,6 +203,7 @@ public class BodySourceView : MonoBehaviour
 		GUIRightHand.text = "joint not tracked";
 	}
 
+	//smooth joint position over time
 	public Vector3 SmoothJoint (int joint) {
 		Vector3 smoothedJoint = jointStorage[joint][jointBufferSize - 1];
 		foreach (Vector3 vec in jointStorage[joint]) {
@@ -213,6 +216,7 @@ public class BodySourceView : MonoBehaviour
 		return smoothedJoint;
 	}
 
+	//smooth joint acceleration over time
 	public Vector3 SmoothAcceleration (bool absolute, int joint) {
 		Vector3 smoothedAcceleration = localAcceleration [joint];
 		foreach (Vector3 vec in localAccelerationCache[joint]) {
@@ -231,20 +235,24 @@ public class BodySourceView : MonoBehaviour
 		}
 	}
 
+	//convert kinect vector to unity vector
 	private Vector3 GetVector3FromJoint(Kinect.Joint joint)
 	{
 		return new Vector3(joint.Position.X * 10, joint.Position.Y * 10, joint.Position.Z * 10);
 	}
 
+	//get the absolute values of a vector
 	private Vector3 V3Abs(Vector3 input) {
 		input.Set(Mathf.Abs(input[0]), Mathf.Abs(input[1]), Mathf.Abs(input[2]));
 		return input;
 	}
 
+	//compare vectors
 	private bool V3Equal(Vector3 a, Vector3 b){
 		return Vector3.SqrMagnitude(a - b) < 0.0001;
 	}
 
+	//access acceleration from other scripts
 	public Vector3 GetLocalAcceleration(bool absolute, int joint) {
 		if (absolute) {
 			return (V3Abs(localAcceleration[joint]));
@@ -254,10 +262,11 @@ public class BodySourceView : MonoBehaviour
 		}
 	}
 
+	//access joints from other scripts
 	public Vector3 GetJoint (int joint) {
 		return jointStorage[joint][jointBufferSize - 1];
 	}
-
+	
 	public bool isBodyTracked () {
 		return isTracked;
 	}
