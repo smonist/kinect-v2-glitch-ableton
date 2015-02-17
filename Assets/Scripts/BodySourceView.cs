@@ -32,6 +32,9 @@ public class BodySourceView : MonoBehaviour
 
 	public float zRestriction = 30f;
 
+	private bool accRising = false;
+	private int hitCoolDown = 0;
+
 	void Start ()
 	{
 		//fill caches
@@ -125,8 +128,8 @@ public class BodySourceView : MonoBehaviour
 						nearestBody = (data[i].Joints[Kinect.JointType.SpineBase].Position.Z * 10);
 						bodyCountIndex = i;
 
-						GUIDebug.text = bodyCountIndex.ToString();
-						GUIDebugTwo.text = nearestBody.ToString();
+						//GUIDebug.text = bodyCountIndex.ToString();
+						//GUIDebugTwo.text = nearestBody.ToString();
 					}
 				}
 				isTracked = true;
@@ -176,6 +179,8 @@ public class BodySourceView : MonoBehaviour
 
 			jointCount++;
 		}
+
+		//detectAcceleration (10);
 	}
 
 	//stuff to do when the player gets out of range
@@ -190,7 +195,7 @@ public class BodySourceView : MonoBehaviour
 		}
 
 		for (int i = 0; i < 25; i++) {
-			for (int u = 0; i < accelerationBufferSize; i++) {
+			for (int u = 0; u < accelerationBufferSize; u++) {
 				localAccelerationCache[i][u] = Vector3.zero;
 			}
 		}
@@ -235,6 +240,55 @@ public class BodySourceView : MonoBehaviour
 		}
 	}
 
+
+	public bool detectAcceleration (int joint) {
+		Vector3 oldAccelerationVector = Vector3.zero;
+		bool returnValue = false;
+
+		//average of last x accelerations
+		foreach (Vector3 vec in localAccelerationCache[joint]) {
+			oldAccelerationVector += vec;
+		}
+		oldAccelerationVector /= localAccelerationCache[joint].Count;
+
+		float actualAcceleration = localAcceleration [joint].x + localAcceleration [joint].y + localAcceleration [joint].z;
+		float oldAcceleration = oldAccelerationVector.x + oldAccelerationVector.y + oldAccelerationVector.z;
+
+		if (actualAcceleration > 0.1f) {
+			if ((actualAcceleration - oldAcceleration) > 0.2f) {
+				accRising = true;
+				GUIDebug.text = "rising";
+			}
+
+			else {
+				if (accRising) {
+					if (hitCoolDown == 0) {
+						GUIDebug.text = "HIT";
+						hitCoolDown = 30;
+						returnValue = true;
+					}
+				}
+				else {
+					GUIDebug.text = "falling";
+				}
+
+				accRising = false;
+			}
+		}
+		else {
+			GUIDebug.text = "too small";
+		}
+
+		if (hitCoolDown > 0) {
+			hitCoolDown--;
+		}
+
+
+		GUIDebugTwo.text = hitCoolDown.ToString();
+		return returnValue;
+	}
+
+
 	//convert kinect vector to unity vector
 	private Vector3 GetVector3FromJoint(Kinect.Joint joint)
 	{
@@ -247,7 +301,7 @@ public class BodySourceView : MonoBehaviour
 		return input;
 	}
 
-	//compare vectors
+	//returns true when two vectors are "equal"
 	private bool V3Equal(Vector3 a, Vector3 b){
 		return Vector3.SqrMagnitude(a - b) < 0.0001;
 	}

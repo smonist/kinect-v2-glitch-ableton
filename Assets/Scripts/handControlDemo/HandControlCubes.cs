@@ -4,7 +4,9 @@ using System.Collections;
 public class HandControlCubes : MonoBehaviour {
 	public GameObject BodySourceView;
 	private BodySourceView _BodyView;
-	
+
+	public GameObject prefab;
+	private GameObject[] prefabs;
 	private GameObject[] cube;
 
 	Vector3 leftHand = Vector3.zero;
@@ -18,11 +20,16 @@ public class HandControlCubes : MonoBehaviour {
 		_BodyView = BodySourceView.GetComponent<BodySourceView>();
 
 		cube = new GameObject[resolution + 1];
+		prefabs = new GameObject[resolution + 1];
 		for (int i = 0; i <= resolution; i++) {
 			cube[i] = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			cube[i].transform.Rotate (new Vector3 (Random.Range(0f, 360.0F), Random.Range(0f, 360.0F),Random.Range(0f, 360.0F)));
 			cube[i].transform.localScale = new Vector3(Random.Range(1f, 3F), Random.Range(1f, 3F),Random.Range(1f, 3F));
 			cube[i].transform.parent = gameObject.transform;
+
+
+			prefabs[i] = (GameObject) Instantiate(prefab, Vector3.zero, Quaternion.identity);
+			prefabs[i].transform.parent = cube[i].transform;
 		}
 	}
 	

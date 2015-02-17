@@ -39,7 +39,8 @@ public class JitSend : MonoBehaviour {
 	private float sourcePosition;
 
 	public float grenzwert = 0.3f;
-	private float[] toSend = {0, 0, 0};
+	//note on/off, pitch, bg synth volume, hit on/off
+	private float[] toSend = {0, 0, 0, 0};
 
 	public int minDistance = 15;
 	public int maxDistance = 35;
@@ -91,6 +92,14 @@ public class JitSend : MonoBehaviour {
 
 		toSend[2] = sourcePosition;
 
+
+		if(_BodyView.detectAcceleration(10)) {
+			toSend[3] = 1f;
+			Debug.Log ("YAE");
+		}
+		else {
+			toSend[3] = 0f;
+		}
 
 		//round them all!
 		toSend[1] = (float) Math.Round(toSend[1], 2);
