@@ -180,7 +180,7 @@ public class BodySourceView : MonoBehaviour
 			jointCount++;
 		}
 
-		//detectAcceleration (10);
+		GUIDebugTwo.text = handHeight().ToString();
 	}
 
 	//stuff to do when the player gets out of range
@@ -284,10 +284,20 @@ public class BodySourceView : MonoBehaviour
 		}
 
 
-		GUIDebugTwo.text = hitCoolDown.ToString();
 		return returnValue;
 	}
+	
+	public float handDifference () {
+		float handDifferenceVec = jointStorage [7] [jointBufferSize - 1].x - jointStorage [11] [jointBufferSize - 1].x;
 
+		return handDifferenceVec;
+	}
+
+	public float handHeight () {
+		float handHeightVec = (jointStorage [7] [jointBufferSize - 1].y + jointStorage [11] [jointBufferSize - 1].y) / 2;
+
+		return handHeightVec;
+	}
 
 	//convert kinect vector to unity vector
 	private Vector3 GetVector3FromJoint(Kinect.Joint joint)

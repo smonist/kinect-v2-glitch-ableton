@@ -39,42 +39,62 @@ public class JitSend : MonoBehaviour {
 	private float sourcePosition;
 
 	public float grenzwert = 0.3f;
-	//note on/off, pitch, bg synth volume, hit on/off
-	private float[] toSend = {0, 0, 0, 0};
+	//main synth note on/off, pitch, volume, bg synth volume, hit sample on/off
+	private float[] toSend = {0, 0, 0, 0, 0};
 
 	public int minDistance = 15;
 	public int maxDistance = 35;
 
 
 	void Update() {
-		sourceJoint = _BodyView.SmoothAcceleration(true, 10);
-
-		if (sourceJoint.x > grenzwert | sourceJoint.y > grenzwert | sourceJoint.z > grenzwert) {
+		if (_BodyView.isBodyTracked()) {
 			toSend[0] = 1;
-			toSend[1] = sourceJoint.x + sourceJoint.y + sourceJoint.z;
+
+			float handDifference = _BodyView.handDifference();
+			handDifference = Math.Abs(handDifference);
+			handDifference += 72f; //add octaves and stuff
+
+			toSend[1] = (float) Mathf.Round(handDifference);
+
+
+			float handVolume = _BodyView.handHeight();
+			if (handVolume > 0) {
+				handVolume /= 10;
+				handVolume += 0.2f;
+
+				handVolume = Mathf.Clamp (handVolume, 0.2f, 1.0f);
+			}
+			else {
+				handVolume = 0.2f;
+			}
+
+			toSend[2] = (float) Math.Round(handVolume, 2);
 		}
 		else {
 			toSend[0] = 0;
 			toSend[1] = 0;
+			toSend[2] = 0;
 		}
 
 
-		//prepare volume of background music
-		sourcePosition = _BodyView.SmoothJoint(0).z;
 
-		//define boundaries
-		if (sourcePosition < minDistance) {
-			sourcePosition = 15;
-		}
-		else if (sourcePosition > maxDistance) {
-			sourcePosition = maxDistance;
-		}
 
-		//if no player is in view, set to 0.4
+		//if no player is in view, set to 0.5
 		if (!_BodyView.isBodyTracked()) {
-			sourcePosition = 0.6f;
+			sourcePosition = 0.5f;
 		}
 		else {
+			//prepare volume of background music
+			sourcePosition = _BodyView.SmoothJoint(0).z;
+			
+			//define boundaries
+			if (sourcePosition < minDistance) {
+				sourcePosition = 15;
+			}
+			else if (sourcePosition > maxDistance) {
+				sourcePosition = maxDistance;
+			}
+
 			//break it down to a range from 0 to 1
 			sourcePosition -= minDistance;
 			sourcePosition *= (100/(maxDistance - minDistance));
@@ -90,20 +110,19 @@ public class JitSend : MonoBehaviour {
 			}
 		}
 
-		toSend[2] = sourcePosition;
+		toSend[3] = sourcePosition;
 
 
 		if(_BodyView.detectAcceleration(10)) {
-			toSend[3] = 1f;
-			Debug.Log ("YAE");
+			toSend[4] = 1f;
 		}
 		else {
-			toSend[3] = 0f;
+			toSend[4] = 0f;
 		}
 
 		//round them all!
-		toSend[1] = (float) Math.Round(toSend[1], 2);
-		toSend[2] = (float) Math.Round(toSend[2], 2);
+		//toSend[1] = (float) Math.Round(toSend[1], 2);
+		//toSend[2] = (float) Math.Round(toSend[2], 2);
 
 		write(toSend);
 
