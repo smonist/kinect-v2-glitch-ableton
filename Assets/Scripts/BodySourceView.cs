@@ -165,6 +165,9 @@ public class BodySourceView : MonoBehaviour
 				globalAcceleration += V3Abs(localAcceleration[jointCount]);
 			}
 
+			if (jointCount == 0) {
+				GUIDebug.text = ((GetJoint(0).y * -1) + handHeight()).ToString();
+			}
 			if (jointCount == 10) {
 				GUIRightHand.text = SmoothAcceleration(false, 10).ToString();
 			}
@@ -324,6 +327,10 @@ public class BodySourceView : MonoBehaviour
 		else {
 			return localAcceleration[joint];
 		}
+	}
+
+	public float GetGlobalAcceleration () {
+		return (globalAcceleration.x + globalAcceleration.y) ;
 	}
 
 	//access joints from other scripts

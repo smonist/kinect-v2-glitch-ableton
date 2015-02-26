@@ -39,8 +39,8 @@ public class JitSend : MonoBehaviour {
 	private float sourcePosition;
 
 	public float grenzwert = 0.3f;
-	//main synth note on/off, pitch, volume, bg synth volume, hit sample on/off
-	private float[] toSend = {0, 0, 0, 0, 0};
+	//main synth note on/off, pitch, volume, bg synth volume, hit sample on/off, globalAcceleration
+	private float[] toSend = {0, 0, 0, 0, 0, 0};
 
 	public int minDistance = 15;
 	public int maxDistance = 35;
@@ -52,20 +52,21 @@ public class JitSend : MonoBehaviour {
 
 			float handDifference = _BodyView.handDifference();
 			handDifference = Math.Abs(handDifference);
-			handDifference += 72f; //add octaves and stuff
+			handDifference /= 2;
+			handDifference += 73f; //add octaves and stuff
 
 			toSend[1] = (float) Mathf.Round(handDifference);
 
 
-			float handVolume = _BodyView.handHeight();
+			float handVolume = _BodyView.GetJoint(0).y * -1 + _BodyView.handHeight();
 			if (handVolume > 0) {
 				handVolume /= 10;
-				handVolume += 0.2f;
+				handVolume += 0.4f;
 
-				handVolume = Mathf.Clamp (handVolume, 0.2f, 1.0f);
+				handVolume = Mathf.Clamp (handVolume, 0.4f, 0.8f);
 			}
 			else {
-				handVolume = 0.2f;
+				handVolume = 0.4f;
 			}
 
 			toSend[2] = (float) Math.Round(handVolume, 2);
@@ -75,7 +76,6 @@ public class JitSend : MonoBehaviour {
 			toSend[1] = 0;
 			toSend[2] = 0;
 		}
-
 
 
 
@@ -113,16 +113,16 @@ public class JitSend : MonoBehaviour {
 		toSend[3] = sourcePosition;
 
 
-		if(_BodyView.detectAcceleration(10)) {
+		/*if(_BodyView.detectAcceleration(10)) {
 			toSend[4] = 1f;
 		}
 		else {
 			toSend[4] = 0f;
-		}
+		}*/
+		toSend [4] = 0f;
 
-		//round them all!
-		//toSend[1] = (float) Math.Round(toSend[1], 2);
-		//toSend[2] = (float) Math.Round(toSend[2], 2);
+		toSend[5] = (float) Mathf.Round(_BodyView.GetGlobalAcceleration());
+
 
 		write(toSend);
 
