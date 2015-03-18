@@ -18,6 +18,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using System.Collections.Generic;
 
 public class JitSend : MonoBehaviour {
 
@@ -39,37 +40,39 @@ public class JitSend : MonoBehaviour {
 	private float sourcePosition;
 
 	public float grenzwert = 0.3f;
-	//main synth note on/off, pitch, volume, bg synth volume, hit sample on/off, globalAcceleration
+	//main synth volume, pitch, ?, bg synth volume, ?, globalAcceleration
 	private float[] toSend = {0, 0, 0, 0, 0, 0};
 
 	public int minDistance = 15;
 	public int maxDistance = 35;
 
+	public int handAccelerationModifier = 4;
+	private List<float> volumeCache = new List<float>();
+	public int volumeBufferSize = 5;
 
 	void Update() {
 		if (_BodyView.isBodyTracked()) {
-			toSend[0] = 1;
+			float handAcceleration = _BodyView.handAcceleration(true);
+			handAcceleration /= handAccelerationModifier;
+			handAcceleration = Mathf.Clamp(handAcceleration, 0f, 0.9f);
 
-			float handDifference = _BodyView.handDifference();
-			handDifference = Math.Abs(handDifference);
-			handDifference /= 2;
-			handDifference += 73f; //add octaves and stuff
-
-			toSend[1] = (float) Mathf.Round(handDifference);
-
-
-			float handVolume = _BodyView.GetJoint(0).y * -1 + _BodyView.handHeight();
-			if (handVolume > 0) {
-				handVolume /= 10;
-				handVolume += 0.4f;
-
-				handVolume = Mathf.Clamp (handVolume, 0.4f, 0.8f);
-			}
-			else {
-				handVolume = 0.4f;
+			foreach(float vol in volumeCache) {
+				handAcceleration += vol;
 			}
 
-			toSend[2] = (float) Math.Round(handVolume, 2);
+			handAcceleration = handAcceleration/(volumeCache.Count + 1);
+			toSend[0] = (float) Math.Round(handAcceleration, 2);
+			
+			volumeCache.RemoveAt(0);
+			volumeCache.Add(handAcceleration);
+
+
+			float bodyPosition = _BodyView.GetJoint(0).x;
+			bodyPosition /= 10;
+			toSend[1] = bodyPosition;
+
+
+			toSend[2] = 0f;
 		}
 		else {
 			toSend[0] = 0;
@@ -182,6 +185,11 @@ public class JitSend : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_BodyView = BodySourceView.GetComponent<BodySourceView>();
+
+		for (int i = 0; i < volumeBufferSize; i++) {
+			volumeCache.Add (0f);
+		}
+
 
 		client = new TcpClient();
 		updateSend = new Queue();

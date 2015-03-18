@@ -158,19 +158,11 @@ public class BodySourceView : MonoBehaviour
 			Vector3 vectorSourceJoint = GetVector3FromJoint(sourceJoint);
 
 
-
-
 			localAcceleration[jointCount] = vectorSourceJoint - jointStorage[jointCount][0];
 			if (!V3Equal(localAcceleration[jointCount], Vector3.zero)) {
 				globalAcceleration += V3Abs(localAcceleration[jointCount]);
 			}
 
-			if (jointCount == 0) {
-				GUIDebug.text = ((GetJoint(0).y * -1) + handHeight()).ToString();
-			}
-			if (jointCount == 10) {
-				GUIRightHand.text = SmoothAcceleration(false, 10).ToString();
-			}
 
 			//joint cache
 			jointStorage[jointCount].RemoveAt(0);
@@ -182,9 +174,10 @@ public class BodySourceView : MonoBehaviour
 
 			jointCount++;
 		}
-
-		GUIDebugTwo.text = handHeight().ToString();
+		GUIDebug.text = handAcceleration (true).ToString ();
 	}
+
+
 
 	//stuff to do when the player gets out of range
 	private void playerOutOfRange() {
@@ -289,18 +282,32 @@ public class BodySourceView : MonoBehaviour
 
 		return returnValue;
 	}
-	
+
+	//difference between left and right hand - is this working?
 	public float handDifference () {
 		float handDifferenceVec = jointStorage [7] [jointBufferSize - 1].x - jointStorage [11] [jointBufferSize - 1].x;
 
 		return handDifferenceVec;
 	}
 
+	//average height of both hands
 	public float handHeight () {
 		float handHeightVec = (jointStorage [7] [jointBufferSize - 1].y + jointStorage [11] [jointBufferSize - 1].y) / 2;
 
 		return handHeightVec;
 	}
+
+	public float handAcceleration(bool smooth) {
+		if (smooth) {
+			return V3toFloat(SmoothAcceleration(true, 7) + SmoothAcceleration(true, 10), true);
+
+		}
+		else {
+			return (Mathf.Abs (V3toFloat (localAcceleration [7], true)) + Mathf.Abs (V3toFloat (localAcceleration [10], true)));
+		}
+	}
+
+
 
 	//convert kinect vector to unity vector
 	private Vector3 GetVector3FromJoint(Kinect.Joint joint)
@@ -317,6 +324,15 @@ public class BodySourceView : MonoBehaviour
 	//returns true when two vectors are "equal"
 	private bool V3Equal(Vector3 a, Vector3 b){
 		return Vector3.SqrMagnitude(a - b) < 0.0001;
+	}
+
+	private float V3toFloat(Vector3 input, bool absolute) {
+		if (absolute) {
+			return (Mathf.Abs(input.x) + Mathf.Abs(input.y) + Mathf.Abs(input.z));
+		}
+		else {
+			return (input.x + input.y + input.z);
+		}
 	}
 
 	//access acceleration from other scripts

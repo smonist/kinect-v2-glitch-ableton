@@ -53,8 +53,8 @@
      <Compile Include="Assets\Scripts\Glitch Ableton\JitSend.cs" />
      <Compile Include="Assets\Scripts\Glitch\GlitchController.cs" />
      <Compile Include="Assets\Scripts\HandControl\HandControl.cs" />
-     <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
      <Compile Include="Assets\Scripts\UlrichsBlock\Ulrichs_Block.cs" />
+     <Compile Include="Assets\Scripts\cubeWave\cubeWave.cs" />
      <Compile Include="Assets\Scripts\handControlDemo\HandControlCubes.cs" />
      <Compile Include="Assets\Scripts\handControlDemo\gridHorizontalLines.cs" />
      <Compile Include="Assets\Scripts\handControlDemo\gridWhiteDot.cs" />
